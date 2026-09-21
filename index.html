@@ -1,161 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title> ejemplo</title>
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      overflow: hidden;
-      font-family: monospace;
-      color: #0f0;
-    }
-    canvas {
-      display: block;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-    #musicControl {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(0,0,0,0.7);
-      border: 2px solid #FF2D75;
-      color: #FF2D75;
-      font-size: 18px;
-      padding: 10px 20px;
-      cursor: pointer;
-      border-radius: 8px;
-      z-index: 10;
-      user-select: none;
-      transition: background-color 0.3s ease;
-    }
-    #musicControl:hover {
-      background: #FF2D75;
-      color: black;
-    }
-    #mensaje {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: #FF2D75;
-      font-size: 28px;
-      font-weight: bold;
-      font-family: monospace;
-      text-shadow: 0 0 8px #FF2D75;
-      pointer-events: none;
-      z-index: 5;
-      user-select: none;
-      text-align: center;
-      max-width: 90vw;
-      line-height: 1.2;
-
-      /* Animación suave de parpadeo */
-      animation: parpadeo 3s ease-in-out infinite;
-    }
-
-    @keyframes parpadeo {
-      0%, 100% {
-        color: #FF2D75;
-        text-shadow: 0 0 8px #FF2D75;
-        opacity: 1;
-      }
-      50% {
-        color: #FF81A9;
-        text-shadow: 0 0 20px #FF81A9;
-        opacity: 0.7;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi Bestie</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="petals"></div>
 
-<button id="musicControl">▶️ Reproducir música</button>
+    <div class="container">
+        <section id="inicio" class="pantalla activa">
+            <div class="flores-superiores">✨ 💖 ✨</div>
+            <p class="mini-texto">Un detalle especial para ti</p>
+            <h1>Aloh mi niña!</h1>
+            <p class="descripcion">
+                Hice este pequeño rincón web para recordarte lo importante que eri para mí y celebrar nuestra amistad.
+            </p>
+            <button id="abrirBtn">Ver mi mensaje</button>
+            <div class="flor-decorativa">💎</div>
+        </section>
 
-<audio id="bgMusic" loop>
-  <source src="otherworldly.mp3" type="audio/mpeg" />
-  Tu navegador no soporta audio HTML5.
-</audio>
+        <section id="mensaje" class="pantalla">
+            <div class="ramo">
+                <span>✨</span>
+                <span>💖</span>
+                <span>💎</span>
+                <span>🌸</span>
+                <span>🌟</span>
+            </div>
+            <h2>Para la mejor</h2>
+            <div class="tarjeta">
+                <p>
+                    Gracias por estar siempre ahí, por cada risa, cada consejo y por ser una persona tan increíble en mi vida.
+                </p>
+                <p>
+                    Espero que este detalle te saque una sonrisa hoyyy, te quero musho mi niñap
+                </p>
+                <p class="pd">
+                    P.D. hay q hacer mas vc mmgva tkm
+                </p>
+            </div>
+            <button id="volverBtn">Volver al inicio</button>
+        </section>
+    </div>
 
-<div id="mensaje">
-  Se ve bien kbron <br> waos
-</div>
-
-<canvas id="matrix"></canvas>
-
-<script>
-  const canvas = document.getElementById("matrix");
-  const ctx = canvas.getContext("2d");
-  let width = window.innerWidth;
-  let height = window.innerHeight;
-
-  canvas.width = width;
-  canvas.height = height;
-
-  const letters = "アァイィウヴエェオカキクケコサシスセソABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
-  const fontSize = 18;
-  const columns = Math.floor(width / fontSize);
-  const drops = new Array(columns).fill(1);
-
-  function draw() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, width, height);
-    ctx.font = fontSize + "px monospace";
-
-    for (let i = 0; i < drops.length; i++) {
-      const x = i * fontSize;
-      const y = drops[i] * fontSize;
-
-      if (Math.random() < 0.002) {
-        ctx.fillStyle = "#FF2D75";
-        ctx.shadowColor = "#FF2D75";
-        ctx.shadowBlur = 8;
-        ctx.fillText("Te amo", x, y);
-        ctx.shadowBlur = 0;
-      } else {
-        ctx.fillStyle = "#0F0";
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, x, y);
-      }
-
-      if (y > height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
-
-      drops[i]++;
-    }
-  }
-
-  setInterval(draw, 33);
-
-  window.addEventListener("resize", () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-  });
-
-  // Control de música
-  const musicControl = document.getElementById("musicControl");
-  const bgMusic = document.getElementById("bgMusic");
-
-  musicControl.addEventListener("click", () => {
-    if (bgMusic.paused) {
-      bgMusic.play().catch(() => {
-        alert("Tocá la pantalla o botón para activar el audio.");
-      });
-      musicControl.textContent = "⏸️ Pausar música";
-    } else {
-      bgMusic.pause();
-      musicControl.textContent = "▶️ Reproducir música";
-    }
-  });
-</script>
-
+    <audio id="musica" src="musica.mp3" loop preload="auto"></audio>
+    <script src="script.js"></script>
 </body>
 </html>
